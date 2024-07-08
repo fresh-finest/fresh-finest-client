@@ -74,14 +74,15 @@ const Login = () => {
                       <Form.Check type="checkbox" label="Remember me" />
                     </Form.Group>
     
-                    <Button  variant="success" type="submit" className="w-100 mt-3">
-                      Login
+                    <Button disabled={loading}  variant="success" type="submit" className="w-100 mt-3">
+                      {loading? "Loading...":"Login"}
                     </Button>
-    
+
                     <div className="text-center mt-3">
                       <a href="/forgot-password">Forgot password?</a>
                     </div>
                   </Form>
+                  {error && <p className="text-red-500">{error}</p>}
                 </Card.Body>
               </Card>
             </Col>
