@@ -15,7 +15,7 @@ export default function ManageUser() {
   const [editingRole, setEditingRole] = useState('');
 
   const getData = async () => {
-    const response = await fetch(`http://localhost:5000/api/user`, {
+    const response = await fetch(`https://fresh-finest-server-dd57784051b3.herokuapp.com/api/user`, {
       method: "GET",
       //  headers: { Authorization: `Bearer ${token}` },
     });
@@ -38,7 +38,7 @@ export default function ManageUser() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/user', formData);
+      await axios.post('https://fresh-finest-server-dd57784051b3.herokuapp.com/api/user', formData);
       setFormData({
         userName: '',
         email: '',
@@ -64,7 +64,7 @@ export default function ManageUser() {
 
   const handleSaveRole = async (userId) => {
     try {
-      await axios.put(`http://localhost:5000/api/user/${userId}`, { role: editingRole });
+      await axios.put(`https://fresh-finest-server-dd57784051b3.herokuapp.com/api/user/${userId}`, { role: editingRole });
       setEditingUserId(null);
       setEditingRole('');
       getData(); // Refresh data after updating role
