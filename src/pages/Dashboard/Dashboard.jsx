@@ -6,12 +6,12 @@ import { GoContainer } from "react-icons/go";
 import { CiMail } from "react-icons/ci";
 import { AiOutlineAppstore } from "react-icons/ai";
 import { CiBellOn } from "react-icons/ci";
-import { Select } from "antd";
+import { Menu, Select } from "antd";
 
 // We will set here icon in MenuItems functions, like
 //  { key: '1', icon: <PieChartOutlined />, label: 'Option 1' },
 
-const MenuItems = [
+const menuItems = [
   { key: "1", icon: <FaChartPie />, label: "Option1" },
   { key: "2", icon: <MdOutlineDesktopWindows />, label: "Option2" },
   { key: "3", icon: <GoContainer />, label: "Options3" },
@@ -81,6 +81,31 @@ export default function Dashboard() {
         {value:'Account3', label:'Account 3 x x x '}
       ]}
     />
+    </div>
+    <div style={{display:'flex', flex:1}}>
+    <div
+    onMouseEnter={handleMouseEnter}
+    onMouseLeave={handleMouseLeave}
+
+    style={{
+      width: collapsed ? 80:256,
+      backgroundColor: '#001529',
+      display:'flex',
+      flexDirection:'column',
+      transition:'width 0.2s'
+    }}
+    >
+    <Menu
+      defaultSelectedKeys={['1']}
+      defaultOpenKeys={['sub1']}
+      mode="inline"
+      theme="dark"
+      inlineCollapsed={collapsed}
+      items={menuItems}
+      style={{flex:1}}
+    />
+    
+    </div>
     </div>
 
     </div>
