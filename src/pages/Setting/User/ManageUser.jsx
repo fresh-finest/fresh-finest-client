@@ -164,7 +164,7 @@ export default function ManageUser() {
               <tr>
                 <th>Name</th>
                 <th>Role</th>
-                <th>Permissions</th>
+                <th>Change Role</th>
                 <th>Delete</th>
               </tr>
             </thead>
