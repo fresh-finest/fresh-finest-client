@@ -73,6 +73,17 @@ export default function ManageUser() {
     }
   };
 
+  const handleDeleteUser = async (userId) => {
+    if (window.confirm('Are you sure you want to delete this user?')) {
+      try {
+        await axios.delete(`https://fresh-finest-server-dd57784051b3.herokuapp.com/api/user/${userId}`);
+        getData(); // Refresh data after deleting user
+      } catch (error) {
+        console.error('Error deleting user:', error);
+      }
+    }
+  };
+
   return (
     <Container>
       <Row className="my-4">
@@ -135,9 +146,11 @@ export default function ManageUser() {
                     <option value="analyst">Analyst</option>
                   </Form.Select>
                 </Form.Group>
-                <Button variant="primary" type="submit">
-                  Add User
-                </Button>
+                <div className="d-flex justify-content-center mt-3">
+                  <Button variant="primary" type="submit">
+                    Add User
+                  </Button>
+                </div>
               </Form>
             </Card.Body>
           </Card>
@@ -152,6 +165,7 @@ export default function ManageUser() {
                 <th>Name</th>
                 <th>Role</th>
                 <th>Permissions</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -183,11 +197,16 @@ export default function ManageUser() {
                         </Button>
                       )}
                     </td>
+                    <td>
+                      <Button variant="danger" onClick={() => handleDeleteUser(user._id)}>
+                        Delete
+                      </Button>
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="3">No users found</td>
+                  <td colSpan="4">No users found</td>
                 </tr>
               )}
             </tbody>
