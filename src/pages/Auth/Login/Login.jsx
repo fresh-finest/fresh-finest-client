@@ -27,7 +27,7 @@ const Login = () => {
     try {
       dispatch(signInStart);
 
-      const res = await fetch("http://localhost:5000/api/auth/signin",{
+      const res = await fetch("https://fresh-finest-server-dd57784051b3.herokuapp.com/api/auth/signin",{
         method:"POST",
         headers:{
           "Content-Type": "application/json",
