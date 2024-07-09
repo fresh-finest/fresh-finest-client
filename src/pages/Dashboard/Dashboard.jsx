@@ -1,14 +1,28 @@
-import React, { Children, useState } from "react";
-
-import { FaChartPie } from "react-icons/fa";
-import { MdOutlineDesktopWindows } from "react-icons/md";
-import { GoContainer } from "react-icons/go";
-import { CiMail } from "react-icons/ci";
-import { AiOutlineAppstore } from "react-icons/ai";
-import { CiBellOn } from "react-icons/ci";
-import { Button, Menu, Select } from "antd";
-import { CiSettings } from "react-icons/ci";
-import { FaUserCircle } from "react-icons/fa";
+import React, { useState } from "react";
+import {
+  FaChartPie,
+  FaUserCircle,
+} from "react-icons/fa";
+import {
+  MdOutlineDesktopWindows,
+} from "react-icons/md";
+import {
+  GoContainer,
+} from "react-icons/go";
+import {
+  CiMail,
+  CiBellOn,
+  CiSettings,
+} from "react-icons/ci";
+import {
+  AiOutlineAppstore,
+} from "react-icons/ai";
+import {
+  Button,
+  Menu,
+  Select,
+} from "antd";
+import ManageUser from "../Setting/User/ManageUser";
 
 // We will set here icon in MenuItems functions, like
 //  { key: '1', icon: <PieChartOutlined />, label: 'Option 1' },
@@ -49,14 +63,19 @@ const menuItems = [
 ];
 
 export default function Dashboard() {
-  const [collapsed, setcollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const [showUserManagement, setShowUserManagement] = useState(false);
 
   const handleMouseEnter = () => {
-    setcollapsed(false);
+    setCollapsed(false);
   };
 
   const handleMouseLeave = () => {
-    setcollapsed(true);
+    setCollapsed(true);
+  };
+
+  const handleSettingsClick = () => {
+    setShowUserManagement(!showUserManagement);
   };
 
   return (
@@ -113,12 +132,22 @@ export default function Dashboard() {
               padding: "10px",
             }}
           >
-            <Button icon={<CiSettings />} style={{ marginBottom: "10px" }} />
+            <Button
+              icon={<CiSettings />}
+              style={{ marginBottom: "10px" }}
+              onClick={handleSettingsClick}
+            />
             <Button icon={<FaUserCircle />} />
           </div>
         </div>
-        <div style={{flex:1,padding:'20px'}} >
-        <p>Hi Admin</p>
+        <div style={{ flex: 1, padding: '20px' }}>
+          {showUserManagement && (
+            <div>
+              <h2>User Management</h2>
+              {/* Add your user management functionality here */}
+              <ManageUser/>
+            </div>
+          )}
         </div>
       </div>
     </div>
