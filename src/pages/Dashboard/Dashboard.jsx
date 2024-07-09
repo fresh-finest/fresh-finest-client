@@ -1,10 +1,12 @@
-import React, { Children } from "react";
+import React, { Children, useState } from "react";
 
 import { FaChartPie } from "react-icons/fa";
 import { MdOutlineDesktopWindows } from "react-icons/md";
 import { GoContainer } from "react-icons/go";
 import { CiMail } from "react-icons/ci";
 import { AiOutlineAppstore } from "react-icons/ai";
+import { CiBellOn } from "react-icons/ci";
+import { Select } from "antd";
 
 // We will set here icon in MenuItems functions, like
 //  { key: '1', icon: <PieChartOutlined />, label: 'Option 1' },
@@ -46,5 +48,41 @@ const MenuItems = [
 ];
 
 export default function Dashboard() {
-  return <div>Dashboard</div>;
+  const [collapsed,setcollapsed] = useState(false);
+
+  const handleMouseEnter =()=>{
+    setcollapsed(false);
+  }
+
+  const handleMouseLeave=()=>{
+    setcollapsed(true);
+  }
+
+  return(
+    <div style={{height:'100vh', display:'flex', flexDirection:'column'}}>
+    <div
+    style={{
+      width:'100%',
+      backgroundColor:'#1677FF',
+      padding: '10px 20px',
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+    }}
+    >
+    <CiBellOn  style={{ fontSize: '20px', marginRight: '20px' }}/>
+
+    <Select
+      defaultValue="Account1"
+      style={{width:150}}
+      options={[
+        {value:'Account1',label:'Account 1'},
+        {value:'Account2', label:'Account 2'},
+        {value:'Account3', label:'Account 3 x x x '}
+      ]}
+    />
+    </div>
+
+    </div>
+  )
 }
