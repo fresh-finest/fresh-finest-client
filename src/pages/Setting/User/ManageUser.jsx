@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Form, Button, Table, Container, Row, Col, Card, Modal } from 'react-bootstrap';
+import { Form, Button, Table, Container, Row, Col, Modal } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
 export default function ManageUser() {
   const [users, setUsers] = useState([]);
@@ -12,49 +13,52 @@ export default function ManageUser() {
     designation: '',
     role: 'admin' // Default role
   });
+  const [loading, setLoading] = useState(false);
+
+  const baseUrl = useSelector((state) => state.baseUrl.baseUrl); // Get the base URL from Redux
 
   const getData = async () => {
-    const response = await fetch(`http://localhost:5000/api/user`, {
-      method: "GET",
-      //  headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await response.json();
-    const usersWithDefaultPermissions = data.result.map(user => ({
-      ...user,
-      permissions: user.permissions || {
-        create: false,
-        read: false,
-        write: false,
-        update: false,
-        delete: false,
-        analysis: false
-      }
-    }));
-    setUsers(usersWithDefaultPermissions);
+    try {
+      const response = await axios.get(`${baseUrl}/api/user`);
+      const usersWithDefaultPermissions = response.data.result.map((user) => ({
+        ...user,
+        permissions: user.permissions || {
+          create: false,
+          read: false,
+          write: false,
+          update: false,
+          delete: false,
+          analysis: false,
+        },
+      }));
+      setUsers(usersWithDefaultPermissions);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [baseUrl]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/user', formData);
+      await axios.post(`${baseUrl}/api/user`, formData);
       setFormData({
         userName: '',
         email: '',
         password: '',
         designation: '',
-        role: 'admin' // Reset to default role
+        role: 'admin', // Reset to default role
       });
       getData(); // Refresh data after adding new user
       setShowModal(false); // Close the modal
@@ -64,7 +68,8 @@ export default function ManageUser() {
   };
 
   const handlePermissionChange = async (userId, permission, value) => {
-    const updatedUsers = users.map(user =>
+    setLoading(true);
+    const updatedUsers = users.map((user) =>
       user._id === userId
         ? { ...user, permissions: { ...user.permissions, [permission]: value } }
         : user
@@ -72,20 +77,22 @@ export default function ManageUser() {
     setUsers(updatedUsers);
 
     try {
-      const user = updatedUsers.find(user => user._id === userId);
-      await axios.put(`http://localhost:5000/api/user/${userId}`, {
+      const user = updatedUsers.find((user) => user._id === userId);
+      await axios.put(`${baseUrl}/api/user/${userId}`, {
         role: user.role,
-        permissions: user.permissions
+        permissions: user.permissions,
       });
     } catch (error) {
       console.error('Error updating permissions:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleDeleteUser = async (userId) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/user/${userId}`);
+        await axios.delete(`${baseUrl}/api/user/${userId}`);
         getData(); // Refresh data after deleting user
       } catch (error) {
         console.error('Error deleting user:', error);
@@ -190,12 +197,6 @@ export default function ManageUser() {
                     <td>{user.role}</td>
                     <td>
                       <div style={{ display: 'flex', gap: '10px' }}>
-                        {/* <Form.Check
-                          type="checkbox"
-                          label="Create"
-                          checked={user.permissions.create}
-                          onChange={(e) => handlePermissionChange(user._id, 'create', e.target.checked)}
-                        /> */}
                         <Form.Check
                           type="checkbox"
                           label="Read"
@@ -229,7 +230,7 @@ export default function ManageUser() {
                       </div>
                     </td>
                     <td>
-                      <Button variant="danger" onClick={() => handleDeleteUser(user._id)}>
+                      <Button variant="danger" onClick={() => handleDeleteUser(user._id)} disabled={loading}>
                         Delete
                       </Button>
                     </td>
