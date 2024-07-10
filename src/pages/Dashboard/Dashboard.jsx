@@ -33,10 +33,10 @@ const menuItems = [
   { key: "3", icon: <GoContainer />, label: "Options3" },
   {
     key: "sub1",
-    label: "Navigation Two",
+    label: "Products",
     icon: <CiMail />,
     children: [
-      { key: "5", label: "Option 5" },
+      { key: "5", label: "All products" },
       { key: "6", label: "Option 6" },
       { key: "7", label: "Option 7" },
       { key: "8", label: "Option 8" },
