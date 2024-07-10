@@ -1,18 +1,21 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import  userReducer  from "./user/userSlice"
-import {persistReducer,persistStore} from 'redux-persist';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import userReducer from './user/userSlice';
+import baseUrlReducer from './api/baseUrlSlice'; // Import the baseUrl slice
+import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-const rootReducer = combineReducers({user:userReducer})
+const rootReducer = combineReducers({
+  user: userReducer,
+  baseUrl: baseUrlReducer, // Add the baseUrl reducer
+});
 
 const persistConfig = {
   key: 'root',
   storage,
-  version:1,
-}
+  version: 1,
+};
 
-const persistedReducer = persistReducer(persistConfig,rootReducer)
-
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
@@ -21,6 +24,5 @@ export const store = configureStore({
       serializableCheck: false,
     }),
 });
-
 
 export const persistor = persistStore(store);
