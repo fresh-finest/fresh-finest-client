@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  baseUrl: 'http://localhost:5000',
+  baseUrl: 'https://fresh-finest-server-dd57784051b3.herokuapp.com',
 };
 
 const baseUrlSlice = createSlice({
