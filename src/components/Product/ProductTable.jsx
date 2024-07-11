@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Table, Button } from "react-bootstrap";
 import { DatePicker, Checkbox, Dropdown, Menu } from "antd";
 import axios from "axios";
-import { FaFilter } from "react-icons/fa";
+// import { FaFilter } from "react-icons/fa";
+import { useSelector } from 'react-redux';
 
 
 const { RangePicker } = DatePicker;
 
 const ProductTable = () => {
+    
+  const baseUrl = useSelector((state) => state.baseUrl.baseUrl);
     const [products, setProducts] = useState([]);
     const [selectedColumns, setSelectedColumns] = useState([
       "sku",
@@ -29,7 +32,7 @@ const ProductTable = () => {
   
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/product/");
+        const response = await axios.get(`https://fresh-finest-server-dd57784051b3.herokuapp.com/api/product`);
         setProducts(response.data.result);
       } catch (error) {
         console.error("Error fetching products:", error);

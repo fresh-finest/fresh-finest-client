@@ -17,9 +17,10 @@ export default function ManageUser() {
 
   const baseUrl = useSelector((state) => state.baseUrl.baseUrl); // Get the base URL from Redux
 
+  console.log("baseurl"+baseUrl);
   const getData = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/api/user`);
+      const response = await axios.get(`https://fresh-finest-server-dd57784051b3.herokuapp.com/api/user`);
       const usersWithDefaultPermissions = response.data.result.map((user) => ({
         ...user,
         permissions: user.permissions || {
@@ -52,7 +53,7 @@ export default function ManageUser() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${baseUrl}/api/user`, formData);
+      await axios.post(`https://fresh-finest-server-dd57784051b3.herokuapp.com//api/user`, formData);
       setFormData({
         userName: '',
         email: '',
@@ -78,7 +79,7 @@ export default function ManageUser() {
 
     try {
       const user = updatedUsers.find((user) => user._id === userId);
-      await axios.put(`${baseUrl}/api/user/${userId}`, {
+      await axios.put(`https://fresh-finest-server-dd57784051b3.herokuapp.com/api/user/${userId}`, {
         role: user.role,
         permissions: user.permissions,
       });
@@ -92,7 +93,7 @@ export default function ManageUser() {
   const handleDeleteUser = async (userId) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
-        await axios.delete(`${baseUrl}/api/user/${userId}`);
+        await axios.delete(`https://fresh-finest-server-dd57784051b3.herokuapp.com/api/user/${userId}`);
         getData(); // Refresh data after deleting user
       } catch (error) {
         console.error('Error deleting user:', error);
