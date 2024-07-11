@@ -221,12 +221,7 @@ export default function ManageUser() {
                           checked={user.permissions.delete}
                           onChange={(e) => handlePermissionChange(user._id, 'delete', e.target.checked)}
                         />
-                        <Form.Check
-                          type="checkbox"
-                          label="Analysis"
-                          checked={user.permissions.analysis}
-                          onChange={(e) => handlePermissionChange(user._id, 'analysis', e.target.checked)}
-                        />
+                       
                       </div>
                     </td>
                     <td>
