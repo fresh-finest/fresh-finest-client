@@ -5,12 +5,25 @@ import ProductTable from "../../components/Product/ProductTable";
 import { useSelector } from 'react-redux';
 
 const AllProducts = () => {
-    const baseUrl = useSelector((state) => state.baseUrl.baseUrl);
+  const baseUrl = useSelector((state) => state.baseUrl.baseUrl);
 
-    console.log(baseUrl);
+  console.log(baseUrl);
 
   const [show, setShow] = useState(false);
   const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState({
+    sku: '',
+    title: '',
+    campaigns: '',
+    ctr: '',
+    impressions: '',
+    spend: '',
+    clicks: '',
+    cpc: '',
+    acos: ''
+    
+   
+  });
 
   const handleClose = () => {
     setShow(false);
@@ -18,42 +31,39 @@ const AllProducts = () => {
   };
   const handleShow = () => setShow(true);
 
-  const handleAddProduct = async (event) => {
-    event.preventDefault();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-    const sku = event.target.elements.sku.value.trim();
-    const title = event.target.elements.title.value.trim();
+  console.log(formData);
 
-    // Basic frontend validation
-    const newErrors = {};
-    if (!sku) newErrors.sku = "SKU is required";
-    if (!title) newErrors.title = "Title is required";
-    setErrors(newErrors);
-    if (Object.keys(newErrors).length > 0) return;
-
-    const formData = new FormData();
-    formData.append("sku", event.target.elements.sku.value);
-    formData.append("title", event.target.elements.title.value);
-    formData.append("campaigns", event.target.elements.campaigns.value);
-    formData.append("ctr", event.target.elements.ctr.value);
-    formData.append("impressions", event.target.elements.impressions.value);
-    formData.append("spend", event.target.elements.spend.value);
-    formData.append("clicks", event.target.elements.clicks.value);
-    formData.append("cpc", event.target.elements.cpc.value);
-    formData.append("acos", event.target.elements.acos.value);
-    // formData.append("category", event.target.elements.category.value);
-    // formData.append("tags", event.target.elements.tags.value.split(',').map(tag => tag.trim()));
-
-    console.log('Form Data:', Object.fromEntries(formData.entries())); // Log form data
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       const response = await axios.post(`https://fresh-finest-server-dd57784051b3.herokuapp.com/api/product`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'application/json'
         }
       });
       console.log('Response:', response.data);
-      handleClose();
+      setFormData({
+        sku: '',
+        title: '',
+        campaigns: '',
+        ctr: '',
+        impressions: '',
+        spend: '',
+        clicks: '',
+        cpc: '',
+        acos: ''
+     
+      
+      });
+      handleClose(); // Close the modal
     } catch (error) {
       if (error.response) {
         console.error("Error adding product:", error.response.data); // Log detailed error
@@ -69,6 +79,7 @@ const AllProducts = () => {
         <Button variant="primary" onClick={handleShow}>
           Add Product
         </Button>
+        Upload using CSV
       </div>
       <ProductTable />
 
@@ -77,19 +88,19 @@ const AllProducts = () => {
           <Modal.Title>Add Product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleAddProduct}>
+          <Form onSubmit={handleSubmit}>
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3" controlId="sku">
                   <Form.Label>Product SKU</Form.Label>
-                  <Form.Control type="text" placeholder="Enter product SKU" required isInvalid={!!errors.sku} />
+                  <Form.Control type="text" placeholder="Enter product SKU" name="sku" value={formData.sku} onChange={handleChange} required isInvalid={!!errors.sku} />
                   <Form.Control.Feedback type="invalid">{errors.sku}</Form.Control.Feedback>
                 </Form.Group>
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3" controlId="title">
                   <Form.Label>Product Title</Form.Label>
-                  <Form.Control type="text" placeholder="Enter product title" required isInvalid={!!errors.title} />
+                  <Form.Control type="text" placeholder="Enter product title" name="title" value={formData.title} onChange={handleChange} required isInvalid={!!errors.title} />
                   <Form.Control.Feedback type="invalid">{errors.title}</Form.Control.Feedback>
                 </Form.Group>
               </Col>
@@ -98,19 +109,19 @@ const AllProducts = () => {
               <Col md={4}>
                 <Form.Group className="mb-3" controlId="campaigns">
                   <Form.Label>Campaigns</Form.Label>
-                  <Form.Control type="number" placeholder="Enter number of campaigns" />
+                  <Form.Control type="number" placeholder="Enter number of campaigns" name="campaigns" value={formData.campaigns} onChange={handleChange} />
                 </Form.Group>
               </Col>
               <Col md={4}>
                 <Form.Group className="mb-3" controlId="ctr">
                   <Form.Label>CTR</Form.Label>
-                  <Form.Control type="number" step="0.01" placeholder="Enter CTR" />
+                  <Form.Control type="number" step="0.01" placeholder="Enter CTR" name="ctr" value={formData.ctr} onChange={handleChange} />
                 </Form.Group>
               </Col>
               <Col md={4}>
                 <Form.Group className="mb-3" controlId="impressions">
                   <Form.Label>Impressions</Form.Label>
-                  <Form.Control type="number" placeholder="Enter number of impressions" />
+                  <Form.Control type="number" placeholder="Enter number of impressions" name="impressions" value={formData.impressions} onChange={handleChange} />
                 </Form.Group>
               </Col>
             </Row>
@@ -118,19 +129,19 @@ const AllProducts = () => {
               <Col md={4}>
                 <Form.Group className="mb-3" controlId="spend">
                   <Form.Label>Spend</Form.Label>
-                  <Form.Control type="number" step="0.01" placeholder="Enter spend amount" />
+                  <Form.Control type="number" step="0.01" placeholder="Enter spend amount" name="spend" value={formData.spend} onChange={handleChange} />
                 </Form.Group>
               </Col>
               <Col md={4}>
                 <Form.Group className="mb-3" controlId="clicks">
                   <Form.Label>Clicks</Form.Label>
-                  <Form.Control type="number" placeholder="Enter number of clicks" />
+                  <Form.Control type="number" placeholder="Enter number of clicks" name="clicks" value={formData.clicks} onChange={handleChange} />
                 </Form.Group>
               </Col>
               <Col md={4}>
                 <Form.Group className="mb-3" controlId="cpc">
                   <Form.Label>CPC</Form.Label>
-                  <Form.Control type="number" step="0.01" placeholder="Enter CPC" />
+                  <Form.Control type="number" step="0.01" placeholder="Enter CPC" name="cpc" value={formData.cpc} onChange={handleChange} />
                 </Form.Group>
               </Col>
             </Row>
@@ -138,12 +149,12 @@ const AllProducts = () => {
               <Col md={6}>
                 <Form.Group className="mb-3" controlId="acos">
                   <Form.Label>ACOS</Form.Label>
-                  <Form.Control type="text" placeholder="Enter ACOS" />
+                  <Form.Control type="text" placeholder="Enter ACOS" name="acos" value={formData.acos} onChange={handleChange} />
                 </Form.Group>
               </Col>
               
             </Row>
-          
+            
             <Button variant="primary" type="submit">
               Add Product
             </Button>
