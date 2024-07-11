@@ -1,3 +1,4 @@
+// src/Dashboard.js
 import React, { useState } from "react";
 import {
   FaChartPie,
@@ -23,9 +24,7 @@ import {
   Select,
 } from "antd";
 import ManageUser from "../Setting/User/ManageUser";
-
-// We will set here icon in MenuItems functions, like
-//  { key: '1', icon: <PieChartOutlined />, label: 'Option 1' },
+import AllProducts from "../Product/AllProducts";
 
 const menuItems = [
   { key: "1", icon: <FaChartPie />, label: "Option1" },
@@ -42,7 +41,6 @@ const menuItems = [
       { key: "8", label: "Option 8" },
     ],
   },
-
   {
     key: "sub2",
     label: "Navigation Two",
@@ -64,7 +62,7 @@ const menuItems = [
 
 export default function Dashboard() {
   const [collapsed, setCollapsed] = useState(false);
-  const [showUserManagement, setShowUserManagement] = useState(false);
+  const [selectedKey, setSelectedKey] = useState("1");
 
   const handleMouseEnter = () => {
     setCollapsed(false);
@@ -75,7 +73,26 @@ export default function Dashboard() {
   };
 
   const handleSettingsClick = () => {
-    setShowUserManagement(!showUserManagement);
+    setSelectedKey("settings");
+  };
+
+  const handleMenuClick = ({ key }) => {
+    setSelectedKey(key);
+  };
+
+  const renderContent = () => {
+    if (selectedKey === "5") {
+      return <AllProducts />;
+    } else if (selectedKey === "settings") {
+      return (
+        <div>
+          <h2>User Management</h2>
+          <ManageUser />
+        </div>
+      );
+    } else {
+      return <div>Select an option from the menu</div>;
+    }
   };
 
   return (
@@ -98,7 +115,7 @@ export default function Dashboard() {
           options={[
             { value: "Account1", label: "Account 1" },
             { value: "Account2", label: "Account 2" },
-            { value: "Account3", label: "Account 3 x x x " },
+            { value: "Account3", label: "Account 3" },
           ]}
         />
       </div>
@@ -122,6 +139,7 @@ export default function Dashboard() {
             inlineCollapsed={collapsed}
             items={menuItems}
             style={{ flex: 1 }}
+            onClick={handleMenuClick}
           />
 
           <div
@@ -141,13 +159,7 @@ export default function Dashboard() {
           </div>
         </div>
         <div style={{ flex: 1, padding: '20px' }}>
-          {showUserManagement && (
-            <div>
-              <h2>User Management</h2>
-              {/* Add your user management functionality here */}
-              <ManageUser/>
-            </div>
-          )}
+          {renderContent()}
         </div>
       </div>
     </div>
