@@ -10,12 +10,25 @@ const ProductTable = () => {
   const baseUrl = useSelector((state) => state.baseUrl.baseUrl);
   const [products, setProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
-  const [selectedColumns, setSelectedColumns] = useState([]);
+  // const [selectedColumns, setSelectedColumns] = useState([]);
+  const [selectedColumns, setSelectedColumns] = useState([
+    "sku",
+    "title",
+    "campaigns",
+    "ctr",
+    "impressions",
+    "spend",
+    "clicks",
+    "cpc",
+    "acos",
+  ]);
+
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(15); // Number of items per page
-  const [visibleDropdown, setVisibleDropdown] = useState(null);
-  const [visibleNestedDropdown, setVisibleNestedDropdown] = useState(null);
+  const [visibleDropdowns, setVisibleDropdowns] = useState({});
+  const [visibleNestedDropdowns, setVisibleNestedDropdowns] = useState({});
   const [drawerVisible, setDrawerVisible] = useState(false);
 
   useEffect(() => {
@@ -47,11 +60,17 @@ const ProductTable = () => {
   };
 
   const handleRowClick = (index) => {
-    setVisibleDropdown(visibleDropdown === index ? null : index);
+    setVisibleDropdowns(prevState => ({
+      ...prevState,
+      [index]: !prevState[index]
+    }));
   };
 
   const handleNestedRowClick = (index) => {
-    setVisibleNestedDropdown(visibleNestedDropdown === index ? null : index);
+    setVisibleNestedDropdowns(prevState => ({
+      ...prevState,
+      [index]: !prevState[index]
+    }));
   };
 
   const handleColumnClick = () => {
@@ -74,7 +93,7 @@ const ProductTable = () => {
     { key: "acos", label: "ACoS" },
   ];
 
-  const menu = (
+  /* const menu = (
     <Menu>
       <Checkbox.Group
         options={columns.map(col => ({ label: col.label, value: col.key }))}
@@ -83,7 +102,19 @@ const ProductTable = () => {
         style={{ padding: "10px" }}
       />
     </Menu>
+  ); */
+
+  const menu = (
+    <Menu>
+      <Checkbox.Group
+        options={columns.map(col => ({ label: col.label, value: col.key }))}
+        defaultValue={selectedColumns}
+        onChange={handleColumnChange}
+        style={{ padding: "10px" }}
+      />
+    </Menu>
   );
+
 
   const totalPages = Math.ceil(totalProducts / itemsPerPage);
 
@@ -101,7 +132,7 @@ const ProductTable = () => {
     <div>
       <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", marginBottom: "20px" }}>
         <RangePicker onChange={handleDateChange} style={{ marginRight: "20px" }} />
-        <Dropdown overlay="" trigger={['click']}>
+        <Dropdown overlay={menu} trigger={['click']}>
           <Button variant="primary">
             Columns
           </Button>
@@ -110,7 +141,8 @@ const ProductTable = () => {
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
-            <th>#</th>
+            <th><Checkbox /></th>
+            <th>Image</th>
             {selectedColumns.length === 0 ? (
               columns.map(column => <th key={column.key}>{column.label}</th>)
             ) : (
@@ -126,7 +158,8 @@ const ProductTable = () => {
           {products.map((product, index) => (
             <React.Fragment key={product._id}>
               <tr onClick={() => handleRowClick(index)}>
-                <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
+                <td><Checkbox /></td>
+                <td><img src="https://i5.walmartimages.com/seo/Starbucks-Naturally-Flavored-Vanilla-Coffee-Syrup-12-7-fl-oz_3475d369-a1a6-4df3-929c-d5874e9adb43_1.47e3bb755b7fc8b870da82f4e0bff50c.jpeg" alt={product.title} style={{ width: "50px", height: "50px", borderRadius: "50%" }} /></td>
                 {selectedColumns.length === 0 ? (
                   columns.map(column => (
                     <td key={column.key}>
@@ -143,9 +176,9 @@ const ProductTable = () => {
                     ))
                 )}
               </tr>
-              {visibleDropdown === index && (
+              {visibleDropdowns[index] && (
                 <tr>
-                  <td colSpan={selectedColumns.length === 0 ? columns.length + 1 : selectedColumns.length + 1} style={{ paddingLeft: "20px" }}>
+                  <td colSpan={selectedColumns.length === 0 ? columns.length + 3 : selectedColumns.length + 3} style={{ paddingLeft: "20px" }}>
                     <Table striped bordered hover size="sm" style={{ marginLeft: "20px" }}>
                       <thead>
                         <tr>
@@ -172,7 +205,7 @@ const ProductTable = () => {
                               <td>{item.bid}</td>
                               <td>{item.acos}</td>
                             </tr>
-                            {visibleNestedDropdown === (index + '-' + idx) && (
+                            {visibleNestedDropdowns[index + '-' + idx] && (
                               <tr>
                                 <td colSpan={8} style={{ paddingLeft: "40px" }}>
                                   <Table striped bordered hover size="sm" style={{ marginLeft: "20px" }}>
