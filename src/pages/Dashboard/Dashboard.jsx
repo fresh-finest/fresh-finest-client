@@ -100,7 +100,7 @@ export default function Dashboard() {
       <div
         style={{
           width: "100%",
-          backgroundColor: "#1677FF",
+          backgroundColor: "#969696",
           padding: "10px 20px",
           display: "flex",
           justifyContent: "flex-end",
