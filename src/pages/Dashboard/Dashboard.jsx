@@ -26,8 +26,7 @@ import {
 import AllProducts from "../Product/AllProducts";
 import Settings from "../Setting/Setting/Setting";
 
-// Add the logo import
-import companyLogo from '../../assets/images/toplogo.png'; // Update this path
+import companyLogo from '../../assets/images/toplogo.png';
 
 const menuItems = [
   { key: "1", icon: <FaChartPie />, label: "Option1" },
@@ -110,10 +109,13 @@ export default function Dashboard() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          position: "fixed",
+          top: 0,
+          zIndex: 1,
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
-          <img src={companyLogo} alt="Company Logo" style={{ height: "40px", width:"40px", marginRight: "10px" }} />
+          <img src={companyLogo} alt="Company Logo" style={{ height: "40px", width: "40px", marginRight: "10px" }} />
           <span style={{ fontSize: "25px", color: "#000000" }}>Fresh Finest</span>
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -129,7 +131,7 @@ export default function Dashboard() {
           />
         </div>
       </div>
-      <div style={{ display: "flex", flex: 1 }}>
+      <div style={{ display: "flex", flex: 1, marginTop: "60px" }}>
         <div
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -139,6 +141,10 @@ export default function Dashboard() {
             display: "flex",
             flexDirection: "column",
             transition: "width 0.2s",
+            position: "fixed",
+            top: 60,
+            bottom: 0,
+            zIndex: 1
           }}
         >
           <Menu
@@ -148,16 +154,18 @@ export default function Dashboard() {
             theme="dark"
             inlineCollapsed={collapsed}
             items={menuItems}
-            style={{ flex: 1 }}
             onClick={handleMenuClick}
+            style={{ flex: 1 }}
           />
-
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              padding: "10px",
+              position: 'absolute',
+              bottom: 0,
+              width: '100%',
+              padding: '10px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
             }}
           >
             <Button
@@ -168,11 +176,10 @@ export default function Dashboard() {
             <Button icon={<FaUserCircle />} />
           </div>
         </div>
-        <div style={{ flex: 1, padding: '20px' }}>
+        <div style={{ flex: 1, padding: '20px', marginLeft: collapsed ? 80 : 256, overflowY: 'auto' }}>
           {renderContent()}
         </div>
       </div>
-
       <Settings
         open={isSettingsModalOpen}
         onOk={handleSettingsOk}
