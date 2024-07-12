@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Table, Pagination } from "react-bootstrap";
-import { DatePicker } from "antd";
+import { Table, Pagination, Button } from "react-bootstrap";
+import { DatePicker, Checkbox, Menu, Dropdown } from "antd";
 import axios from "axios";
 import { useSelector } from 'react-redux';
 
@@ -10,7 +10,8 @@ const ProductTable = () => {
   const baseUrl = useSelector((state) => state.baseUrl.baseUrl);
   const [products, setProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
-  const [selectedColumns, setSelectedColumns] = useState(["sku", "title", "campaigns", "ctr", "impressions", "spend", "clicks", "cpc", "acos"]);
+  const [selectedColumns, setSelectedColumns] = useState([]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(15); // Number of items per page
   const [visibleDropdown, setVisibleDropdown] = useState(null);
@@ -31,6 +32,10 @@ const ProductTable = () => {
     } catch (error) {
       console.error("Error fetching products:", error);
     }
+  };
+
+  const handleColumnChange = (checkedValues) => {
+    setSelectedColumns(checkedValues);
   };
 
   const handleDateChange = (dates, dateStrings) => {
@@ -69,6 +74,17 @@ const ProductTable = () => {
     { key: "acos", label: "ACoS" },
   ];
 
+  const menu = (
+    <Menu>
+      <Checkbox.Group
+        options={columns.map(col => ({ label: col.label, value: col.key }))}
+        value={selectedColumns}
+        onChange={handleColumnChange}
+        style={{ padding: "10px" }}
+      />
+    </Menu>
+  );
+
   const totalPages = Math.ceil(totalProducts / itemsPerPage);
 
   const demoData1 = [
@@ -85,16 +101,25 @@ const ProductTable = () => {
     <div>
       <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", marginBottom: "20px" }}>
         <RangePicker onChange={handleDateChange} style={{ marginRight: "20px" }} />
+        <Dropdown overlay="" trigger={['click']}>
+          <Button variant="primary">
+            Columns
+          </Button>
+        </Dropdown>
       </div>
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
             <th>#</th>
-            {columns
-              .filter(column => selectedColumns.includes(column.key))
-              .map(column => (
-                <th key={column.key}>{column.label}</th>
-              ))}
+            {selectedColumns.length === 0 ? (
+              columns.map(column => <th key={column.key}>{column.label}</th>)
+            ) : (
+              columns
+                .filter(column => selectedColumns.includes(column.key))
+                .map(column => (
+                  <th key={column.key}>{column.label}</th>
+                ))
+            )}
           </tr>
         </thead>
         <tbody>
@@ -102,17 +127,25 @@ const ProductTable = () => {
             <React.Fragment key={product._id}>
               <tr onClick={() => handleRowClick(index)}>
                 <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
-                {columns
-                  .filter(column => selectedColumns.includes(column.key))
-                  .map(column => (
+                {selectedColumns.length === 0 ? (
+                  columns.map(column => (
                     <td key={column.key}>
                       {product[column.key]}
                     </td>
-                  ))}
+                  ))
+                ) : (
+                  columns
+                    .filter(column => selectedColumns.includes(column.key))
+                    .map(column => (
+                      <td key={column.key}>
+                        {product[column.key]}
+                      </td>
+                    ))
+                )}
               </tr>
               {visibleDropdown === index && (
                 <tr>
-                  <td colSpan={selectedColumns.length + 1} style={{ paddingLeft: "20px" }}>
+                  <td colSpan={selectedColumns.length === 0 ? columns.length + 1 : selectedColumns.length + 1} style={{ paddingLeft: "20px" }}>
                     <Table striped bordered hover size="sm" style={{ marginLeft: "20px" }}>
                       <thead>
                         <tr>
