@@ -26,6 +26,9 @@ import {
 import AllProducts from "../Product/AllProducts";
 import Settings from "../Setting/Setting/Setting";
 
+// Add the logo import
+import companyLogo from '../../assets/images/toplogo.png'; // Update this path
+
 const menuItems = [
   { key: "1", icon: <FaChartPie />, label: "Option1" },
   { key: "2", icon: <MdOutlineDesktopWindows />, label: "Option2" },
@@ -105,21 +108,26 @@ export default function Dashboard() {
           backgroundColor: "#969696",
           padding: "10px 20px",
           display: "flex",
-          justifyContent: "flex-end",
+          justifyContent: "space-between",
           alignItems: "center",
         }}
       >
-        <CiBellOn style={{ fontSize: "20px", marginRight: "20px" }} />
-
-        <Select
-          defaultValue="Account1"
-          style={{ width: 150 }}
-          options={[
-            { value: "Account1", label: "Account 1" },
-            { value: "Account2", label: "Account 2" },
-            { value: "Account3", label: "Account 3" },
-          ]}
-        />
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img src={companyLogo} alt="Company Logo" style={{ height: "40px", width:"40px", marginRight: "10px" }} />
+          <span style={{ fontSize: "25px", color: "#000000" }}>Fresh Finest</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <CiBellOn style={{ fontSize: "20px", marginRight: "20px" }} />
+          <Select
+            defaultValue="Account1"
+            style={{ width: 150 }}
+            options={[
+              { value: "Account1", label: "Account 1" },
+              { value: "Account2", label: "Account 2" },
+              { value: "Account3", label: "Account 3" },
+            ]}
+          />
+        </div>
       </div>
       <div style={{ display: "flex", flex: 1 }}>
         <div
