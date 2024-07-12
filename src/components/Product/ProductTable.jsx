@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Pagination, Button } from "react-bootstrap";
+import { Table, Pagination, Button, Form } from "react-bootstrap";
 import { DatePicker, Checkbox, Menu, Dropdown } from "antd";
 import axios from "axios";
 import { useSelector } from 'react-redux';
@@ -10,7 +10,6 @@ const ProductTable = () => {
   const baseUrl = useSelector((state) => state.baseUrl.baseUrl);
   const [products, setProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
-  // const [selectedColumns, setSelectedColumns] = useState([]);
   const [selectedColumns, setSelectedColumns] = useState([
     "sku",
     "title",
@@ -23,17 +22,15 @@ const ProductTable = () => {
     "acos",
   ]);
 
-
-
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(15); // Number of items per page
+  const [itemsPerPage, setItemsPerPage] = useState(15); // Number of items per page
   const [visibleDropdowns, setVisibleDropdowns] = useState({});
   const [visibleNestedDropdowns, setVisibleNestedDropdowns] = useState({});
   const [drawerVisible, setDrawerVisible] = useState(false);
 
   useEffect(() => {
     fetchProducts(currentPage, itemsPerPage);
-  }, [currentPage]);
+  }, [currentPage, itemsPerPage]);
 
   const fetchProducts = async (page, limit) => {
     try {
@@ -57,6 +54,11 @@ const ProductTable = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  const handleItemsPerPageChange = (event) => {
+    setItemsPerPage(Number(event.target.value));
+    setCurrentPage(1); // Reset to first page whenever items per page changes
   };
 
   const handleRowClick = (index) => {
@@ -93,17 +95,6 @@ const ProductTable = () => {
     { key: "acos", label: "ACoS" },
   ];
 
-  /* const menu = (
-    <Menu>
-      <Checkbox.Group
-        options={columns.map(col => ({ label: col.label, value: col.key }))}
-        value={selectedColumns}
-        onChange={handleColumnChange}
-        style={{ padding: "10px" }}
-      />
-    </Menu>
-  ); */
-
   const menu = (
     <Menu>
       <Checkbox.Group
@@ -114,7 +105,6 @@ const ProductTable = () => {
       />
     </Menu>
   );
-
 
   const totalPages = Math.ceil(totalProducts / itemsPerPage);
 
@@ -266,7 +256,16 @@ const ProductTable = () => {
           ))}
         </tbody>
       </Table>
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+        <Form.Group controlId="itemsPerPageSelect" style={{ display: 'flex', alignItems: 'center' }}>
+          <Form.Label style={{width:'150px' }}>Products per page:</Form.Label>
+          <Form.Control as="select" value={itemsPerPage} style={{ marginRight: '10px',width:'70px' }} onChange={handleItemsPerPageChange}>
+            <option value={10}>10</option>
+            <option value={15}>15</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+          </Form.Control>
+        </Form.Group>
         <Pagination>
           <Pagination.First onClick={() => handlePageChange(1)} />
           <Pagination.Prev
