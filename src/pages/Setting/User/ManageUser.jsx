@@ -53,7 +53,7 @@ export default function ManageUser() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`https://fresh-finest-server-dd57784051b3.herokuapp.com//api/user`, formData);
+      await axios.post(`https://fresh-finest-server-dd57784051b3.herokuapp.com/api/user`, formData);
       setFormData({
         userName: '',
         email: '',
