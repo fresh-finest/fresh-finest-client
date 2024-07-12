@@ -34,7 +34,7 @@ const ProductTable = () => {
 
   const fetchProducts = async (page, limit) => {
     try {
-      const response = await axios.get(`${baseUrl}/api/product/limit`, {
+      const response = await axios.get(`https://fresh-finest-server-dd57784051b3.herokuapp.com/api/product/limit`, {
         params: { page, limit }
       });
       setProducts(response.data.products);
@@ -286,6 +286,7 @@ const ProductTable = () => {
           <Pagination.Last onClick={() => handlePageChange(totalPages)} />
         </Pagination>
       </div>
+     
     </div>
   );
 };
