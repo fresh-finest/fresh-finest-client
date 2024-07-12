@@ -1,4 +1,3 @@
-// src/Dashboard.js
 import React, { useState } from "react";
 import {
   FaChartPie,
@@ -23,8 +22,9 @@ import {
   Menu,
   Select,
 } from "antd";
-import ManageUser from "../Setting/User/ManageUser";
+
 import AllProducts from "../Product/AllProducts";
+import Settings from "../Setting/Setting/Setting";
 
 const menuItems = [
   { key: "1", icon: <FaChartPie />, label: "Option1" },
@@ -63,6 +63,7 @@ const menuItems = [
 export default function Dashboard() {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKey, setSelectedKey] = useState("1");
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
   const handleMouseEnter = () => {
     setCollapsed(false);
@@ -73,7 +74,15 @@ export default function Dashboard() {
   };
 
   const handleSettingsClick = () => {
-    setSelectedKey("settings");
+    setIsSettingsModalOpen(true);
+  };
+
+  const handleSettingsOk = () => {
+    setIsSettingsModalOpen(false);
+  };
+
+  const handleSettingsCancel = () => {
+    setIsSettingsModalOpen(false);
   };
 
   const handleMenuClick = ({ key }) => {
@@ -83,13 +92,6 @@ export default function Dashboard() {
   const renderContent = () => {
     if (selectedKey === "5") {
       return <AllProducts />;
-    } else if (selectedKey === "settings") {
-      return (
-        <div>
-          <h2>User Management</h2>
-          <ManageUser />
-        </div>
-      );
     } else {
       return <div>Select an option from the menu</div>;
     }
@@ -162,6 +164,12 @@ export default function Dashboard() {
           {renderContent()}
         </div>
       </div>
+
+      <Settings
+        open={isSettingsModalOpen}
+        onOk={handleSettingsOk}
+        onCancel={handleSettingsCancel}
+      />
     </div>
   );
 }

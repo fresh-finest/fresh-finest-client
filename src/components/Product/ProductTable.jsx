@@ -159,7 +159,7 @@ const ProductTable = () => {
             <React.Fragment key={product._id}>
               <tr onClick={() => handleRowClick(index)}>
                 <td><Checkbox /></td>
-                <td><img src="https://i5.walmartimages.com/seo/Starbucks-Naturally-Flavored-Vanilla-Coffee-Syrup-12-7-fl-oz_3475d369-a1a6-4df3-929c-d5874e9adb43_1.47e3bb755b7fc8b870da82f4e0bff50c.jpeg" alt={product.title} style={{ width: "50px", height: "50px", borderRadius: "50%" }} /></td>
+                <td><img src="https://i5.walmartimages.com/seo/Starbucks-Naturally-Flavored-Vanilla-Coffee-Syrup-12-7-fl-oz_3475d369-a1a6-4df3-929c-d5874e9adb43_1.47e3bb755b7fc8b870da82f4e0bff50c.jpeg" alt={product.title} style={{ width: "30px", height: "30px", borderRadius: "50%" }} /></td>
                 {selectedColumns.length === 0 ? (
                   columns.map(column => (
                     <td key={column.key}>
