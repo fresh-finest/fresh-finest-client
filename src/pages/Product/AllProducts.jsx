@@ -90,14 +90,16 @@ const AllProducts = () => {
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <Row>
-              <Col md={6}>
+              <Col md={12}>
                 <Form.Group className="mb-3" controlId="sku">
                   <Form.Label>Product SKU</Form.Label>
                   <Form.Control type="text" placeholder="Enter product SKU" name="sku" value={formData.sku} onChange={handleChange} required isInvalid={!!errors.sku} />
                   <Form.Control.Feedback type="invalid">{errors.sku}</Form.Control.Feedback>
                 </Form.Group>
               </Col>
-              <Col md={6}>
+            </Row>
+            <Row>
+            <Col md={12}>
                 <Form.Group className="mb-3" controlId="title">
                   <Form.Label>Product Title</Form.Label>
                   <Form.Control type="text" placeholder="Enter product title" name="title" value={formData.title} onChange={handleChange} required isInvalid={!!errors.title} />
@@ -146,7 +148,7 @@ const AllProducts = () => {
               </Col>
             </Row>
             <Row>
-              <Col md={6}>
+              <Col md={4}>
                 <Form.Group className="mb-3" controlId="acos">
                   <Form.Label>ACOS</Form.Label>
                   <Form.Control type="text" placeholder="Enter ACOS" name="acos" value={formData.acos} onChange={handleChange} />
