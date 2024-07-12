@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Pagination } from "react-bootstrap";
-import { DatePicker, Checkbox, Dropdown, Menu } from "antd";
+import { Table, Pagination } from "react-bootstrap";
+import { DatePicker } from "antd";
 import axios from "axios";
 import { useSelector } from 'react-redux';
-import UploadCSV from "./UploadCSV";
 
 const { RangePicker } = DatePicker;
 
@@ -11,19 +10,12 @@ const ProductTable = () => {
   const baseUrl = useSelector((state) => state.baseUrl.baseUrl);
   const [products, setProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
-  const [selectedColumns, setSelectedColumns] = useState([
-    "sku",
-    "title",
-    "campaigns",
-    "ctr",
-    "impressions",
-    "spend",
-    "clicks",
-    "cpc",
-    "acos",
-  ]);
+  const [selectedColumns, setSelectedColumns] = useState(["sku", "title", "campaigns", "ctr", "impressions", "spend", "clicks", "cpc", "acos"]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(15); // Number of items per page
+  const [visibleDropdown, setVisibleDropdown] = useState(null);
+  const [visibleNestedDropdown, setVisibleNestedDropdown] = useState(null);
+  const [drawerVisible, setDrawerVisible] = useState(false);
 
   useEffect(() => {
     fetchProducts(currentPage, itemsPerPage);
@@ -41,14 +33,28 @@ const ProductTable = () => {
     }
   };
 
-  console.log("total: "+totalProducts)
- console.log("data: "+products)
   const handleDateChange = (dates, dateStrings) => {
     console.log("Selected Date Range: ", dates, dateStrings);
   };
 
-  const handleColumnChange = (checkedValues) => {
-    setSelectedColumns(checkedValues);
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleRowClick = (index) => {
+    setVisibleDropdown(visibleDropdown === index ? null : index);
+  };
+
+  const handleNestedRowClick = (index) => {
+    setVisibleNestedDropdown(visibleNestedDropdown === index ? null : index);
+  };
+
+  const handleColumnClick = () => {
+    setDrawerVisible(true);
+  };
+
+  const handleDrawerClose = () => {
+    setDrawerVisible(false);
   };
 
   const columns = [
@@ -65,21 +71,22 @@ const ProductTable = () => {
 
   const totalPages = Math.ceil(totalProducts / itemsPerPage);
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  const demoData1 = [
+    { campaignType: "Type 1", clicks: 100, orders: 10, impressions: 1000, sales: "$1000", cpc: "$1", bid: "$0.5", acos: "10%" },
+    { campaignType: "Type 2", clicks: 150, orders: 15, impressions: 1500, sales: "$1500", cpc: "$1.5", bid: "$0.75", acos: "10%" }
+  ];
+
+  const demoData2 = [
+    { active: "Yes", keyword: "Keyword 1", matchType: "Exact", status: "Active", suggestedBid: "$1.5", bid: "$1.2", impressions: 1000, topOfSearchIS: "50%", clicks: 100, ctr: "10%", spend: "$100", cpc: "$1", orders: 10, sales: "$1000", acos: "10%", roas: "5" },
+    { active: "No", keyword: "Keyword 2", matchType: "Broad", status: "Paused", suggestedBid: "$1.0", bid: "$0.8", impressions: 500, topOfSearchIS: "30%", clicks: 50, ctr: "10%", spend: "$50", cpc: "$1", orders: 5, sales: "$500", acos: "10%", roas: "5" }
+  ];
 
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", marginBottom: "20px" }}>
         <RangePicker onChange={handleDateChange} style={{ marginRight: "20px" }} />
-        <Dropdown overlay="" trigger={['click']}>
-          <Button variant="primary">
-            Columns
-          </Button>
-        </Dropdown>
       </div>
-      <Table striped bordered hover>
+      <Table striped bordered hover size="sm">
         <thead>
           <tr>
             <th>#</th>
@@ -92,14 +99,104 @@ const ProductTable = () => {
         </thead>
         <tbody>
           {products.map((product, index) => (
-            <tr key={product._id}>
-              <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
-              {columns
-                .filter(column => selectedColumns.includes(column.key))
-                .map(column => (
-                  <td key={column.key}>{product[column.key]}</td>
-                ))}
-            </tr>
+            <React.Fragment key={product._id}>
+              <tr onClick={() => handleRowClick(index)}>
+                <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
+                {columns
+                  .filter(column => selectedColumns.includes(column.key))
+                  .map(column => (
+                    <td key={column.key}>
+                      {product[column.key]}
+                    </td>
+                  ))}
+              </tr>
+              {visibleDropdown === index && (
+                <tr>
+                  <td colSpan={selectedColumns.length + 1} style={{ paddingLeft: "20px" }}>
+                    <Table striped bordered hover size="sm" style={{ marginLeft: "20px" }}>
+                      <thead>
+                        <tr>
+                          <th>Campaign Type</th>
+                          <th>Clicks</th>
+                          <th>Orders</th>
+                          <th>Impressions</th>
+                          <th>Sales</th>
+                          <th>CPC</th>
+                          <th>Bid</th>
+                          <th>ACOS</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {demoData1.map((item, idx) => (
+                          <React.Fragment key={idx}>
+                            <tr onClick={() => handleNestedRowClick(index + '-' + idx)}>
+                              <td>{item.campaignType}</td>
+                              <td>{item.clicks}</td>
+                              <td>{item.orders}</td>
+                              <td>{item.impressions}</td>
+                              <td>{item.sales}</td>
+                              <td>{item.cpc}</td>
+                              <td>{item.bid}</td>
+                              <td>{item.acos}</td>
+                            </tr>
+                            {visibleNestedDropdown === (index + '-' + idx) && (
+                              <tr>
+                                <td colSpan={8} style={{ paddingLeft: "40px" }}>
+                                  <Table striped bordered hover size="sm" style={{ marginLeft: "20px" }}>
+                                    <thead>
+                                      <tr>
+                                        <th>Active</th>
+                                        <th>Keyword</th>
+                                        <th>Match Type</th>
+                                        <th>Status</th>
+                                        <th>Suggested Bid</th>
+                                        <th>Bid</th>
+                                        <th>Impressions</th>
+                                        <th>Top-of-search IS</th>
+                                        <th>Clicks</th>
+                                        <th>CTR</th>
+                                        <th>Spend</th>
+                                        <th>CPC</th>
+                                        <th>Orders</th>
+                                        <th>Sales</th>
+                                        <th>ACOS</th>
+                                        <th>ROAS</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {demoData2.map((item, idx2) => (
+                                        <tr key={idx2} onClick={handleColumnClick}>
+                                          <td>{item.active}</td>
+                                          <td>{item.keyword}</td>
+                                          <td>{item.matchType}</td>
+                                          <td>{item.status}</td>
+                                          <td>{item.suggestedBid}</td>
+                                          <td>{item.bid}</td>
+                                          <td>{item.impressions}</td>
+                                          <td>{item.topOfSearchIS}</td>
+                                          <td>{item.clicks}</td>
+                                          <td>{item.ctr}</td>
+                                          <td>{item.spend}</td>
+                                          <td>{item.cpc}</td>
+                                          <td>{item.orders}</td>
+                                          <td>{item.sales}</td>
+                                          <td>{item.acos}</td>
+                                          <td>{item.roas}</td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </Table>
+                                </td>
+                              </tr>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </td>
+                </tr>
+              )}
+            </React.Fragment>
           ))}
         </tbody>
       </Table>
