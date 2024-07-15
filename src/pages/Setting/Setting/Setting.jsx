@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, List, Button } from 'antd';
 import ManageUser from '../User/ManageUser'
+import Setting from '../../../components/Setting/Setting'
 const Settings = ({ open, onOk, onCancel }) => {
   const [selectedSetting, setSelectedSetting] = useState(null);
 
@@ -34,27 +35,7 @@ const Settings = ({ open, onOk, onCancel }) => {
       style={{ top: 0, padding: 0 }}
       bodyStyle={{ height: '100vh', padding: 0, display: 'flex' }}
     >
-      <div style={{ display: 'flex', width: '100%', height: '100%' }}>
-        <List
-          itemLayout="horizontal"
-          dataSource={settingsList}
-          renderItem={item => (
-            <List.Item
-              onClick={() => setSelectedSetting(item.key)}
-              style={{ cursor: 'pointer', padding: '20px', borderBottom: '1px solid #f0f0f0' }}
-            >
-              <List.Item.Meta
-                title={item.title}
-                description={item.description}
-              />
-            </List.Item>
-          )}
-          style={{ width: '30%', overflowY: 'auto', padding: '20px', borderRight: '1px solid #f0f0f0' }}
-        />
-        <div style={{ width: '70%', padding: '20px', overflowY: 'auto' }}>
-          {renderContent()}
-        </div>
-      </div>
+    <Setting/>
     </Modal>
   );
 };
