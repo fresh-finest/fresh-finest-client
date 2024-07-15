@@ -35,7 +35,7 @@ const App = () => {
   };
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout style={{ minHeight: '90vh' }}>
       <Sider style={{ background: '#fff' }}>
         <Menu
           defaultSelectedKeys={['1']}
@@ -43,7 +43,7 @@ const App = () => {
           theme="light"
           items={items}
           style={{
-            height: 'calc(100vh - 64px)',
+            height: 'calc(90vh - 64px)',
             borderRight: 0,
             overflow: 'hidden',
           }}

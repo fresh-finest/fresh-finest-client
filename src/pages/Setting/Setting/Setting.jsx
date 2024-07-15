@@ -11,7 +11,7 @@ const Settings = ({ open, onOk, onCancel }) => {
       footer={null}
       width="100vw"
       style={{ top: 0, padding: 0 }}
-      bodyStyle={{ height: '100vh', padding: 0, display: 'flex' }}
+      bodyStyle={{ height: '90vh', padding: 0, display: 'flex' }}
     >
     <Setting/>
     </Modal>
