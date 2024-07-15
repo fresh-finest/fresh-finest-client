@@ -1,10 +1,12 @@
-import React from 'react';
+// App.js
+import React, { useState } from 'react';
 import {
   ContainerOutlined,
   DesktopOutlined,
   PieChartOutlined,
 } from '@ant-design/icons';
 import { Menu, Layout } from 'antd';
+import ManageUser from '../../pages/Setting/User/ManageUser';
 
 const { Sider, Content } = Layout;
 
@@ -12,7 +14,7 @@ const items = [
   { key: '1', icon: <PieChartOutlined />, label: 'General' },
   { key: '2', icon: <DesktopOutlined />, label: 'Billing' },
   { key: '3', icon: <ContainerOutlined />, label: 'Users' },
-  { key: '4', icon: <PieChartOutlined />, label: 'options1' },
+  { key: '4', icon: <PieChartOutlined />, label: 'Options1' },
   { key: '5', icon: <DesktopOutlined />, label: 'Options2' },
   { key: '6', icon: <ContainerOutlined />, label: 'Options3' },
   { key: '7', icon: <PieChartOutlined />, label: 'Options4' },
@@ -21,6 +23,17 @@ const items = [
 ];
 
 const App = () => {
+  const [selectedKey, setSelectedKey] = useState('1');
+
+  const renderContent = () => {
+    switch (selectedKey) {
+      case '3':
+        return <ManageUser />;
+      default:
+        return <div>Content goes here</div>;
+    }
+  };
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider style={{ background: '#fff' }}>
@@ -34,6 +47,7 @@ const App = () => {
             borderRight: 0,
             overflow: 'hidden',
           }}
+          onClick={({ key }) => setSelectedKey(key)}
         />
         <div
           style={{
@@ -45,7 +59,7 @@ const App = () => {
       </Sider>
       <Layout>
         <Content style={{ padding: '20px' }}>
-          <div style={{ padding: 24, minHeight: 360 }}>Content goes here</div>
+          <div style={{ padding: 24, minHeight: 360 }}>{renderContent()}</div>
         </Content>
       </Layout>
     </Layout>
