@@ -75,11 +75,11 @@ const AllProducts = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
         <Button variant="primary" onClick={handleShow}>
           Add Product
         </Button>
-        Upload using CSV
+        
       </div>
       <ProductTable />
 

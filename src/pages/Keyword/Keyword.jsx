@@ -112,16 +112,22 @@ const Keyword = () => {
   const totalPages = Math.ceil(totalProducts / itemsPerPage);
   const demoData1 = [
     { keyword: "Keyword 1", data1: "Data1", data3: "Data3", data4: "Data4", etcCampaigns: "Campaigns" },
-    { keyword: "Keyword 2", data1: "Data1", data3: "Data3", data4: "Data4", etcCampaigns: "Campaigns" }
-  ];
+    { keyword: "Keyword 2", data1: "Data1", data3: "Data3", data4: "Data4", etcCampaigns: "Campaigns" },
+    { keyword: "Keyword 3", data1: "Data1", data3: "Data3", data4: "Data4", etcCampaigns: "Campaigns" }
+];
 
-  const demoData2 = [
-    { campaignType: "CampaignType", cpc: "CPC", bid: "Bid", cost: "Cost", sales: "Sales", acos: "ACOS", campaignLink: "Campaign Link" }
-  ];
+const demoData2 = [
+    { campaignType: "CampaignType1", cpc: "CPC1", bid: "Bid1", cost: "Cost1", sales: "Sales1", acos: "ACOS1", campaignLink: "Campaign Link1" },
+    { campaignType: "CampaignType2", cpc: "CPC2", bid: "Bid2", cost: "Cost2", sales: "Sales2", acos: "ACOS2", campaignLink: "Campaign Link2" },
+    { campaignType: "CampaignType3", cpc: "CPC3", bid: "Bid3", cost: "Cost3", sales: "Sales3", acos: "ACOS3", campaignLink: "Campaign Link3" }
+];
 
-  const demoData3 = [
-    { history: "History", data1: "Data1", data2: "Data2", data3: "Data3", data4: "Data4", data5: "Data5", data6: "Data6", data7: "Data7" }
-  ];
+const demoData3 = [
+    { history: "History1", data1: "Data1", data2: "Data2", data3: "Data3", data4: "Data4", data5: "Data5", data6: "Data6", data7: "Data7" },
+    { history: "History2", data1: "Data1", data2: "Data2", data3: "Data3", data4: "Data4", data5: "Data5", data6: "Data6", data7: "Data7" },
+    { history: "History3", data1: "Data1", data2: "Data2", data3: "Data3", data4: "Data4", data5: "Data5", data6: "Data6", data7: "Data7" }
+];
+
 
   const filteredProducts = products.filter(product =>
     selectedColumns.some(column =>
