@@ -27,11 +27,12 @@ import AllProducts from "../Product/AllProducts";
 import Settings from "../Setting/Setting/Setting";
 
 import companyLogo from '../../assets/images/toplogo.png';
+import Keyword from "../Keyword/Keyword";
 
 const menuItems = [
   { key: "1", icon: <FaChartPie />, label: "Option1" },
   { key: "2", icon: <MdOutlineDesktopWindows />, label: "Option2" },
-  { key: "3", icon: <GoContainer />, label: "Options3" },
+  { key: "3", icon: <GoContainer />, label: "Keywords" },
   {
     key: "sub1",
     label: "Products",
@@ -94,6 +95,8 @@ export default function Dashboard() {
   const renderContent = () => {
     if (selectedKey === "5") {
       return <AllProducts />;
+    }else if(selectedKey ==="3"){
+      return <Keyword/>
     } else {
       return <div>Select an option from the menu</div>;
     }
