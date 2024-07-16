@@ -28,6 +28,7 @@ const Keyword = () => {
   const [visibleDropdowns, setVisibleDropdowns] = useState({});
   const [visibleNestedDropdowns, setVisibleNestedDropdowns] = useState({});
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(""); // New state for search term
 
   useEffect(() => {
     fetchProducts(currentPage, itemsPerPage);
@@ -109,7 +110,6 @@ const Keyword = () => {
   );
 
   const totalPages = Math.ceil(totalProducts / itemsPerPage);
-
   const demoData1 = [
     { keyword: "Keyword 1", data1: "Data1", data3: "Data3", data4: "Data4", etcCampaigns: "Campaigns" },
     { keyword: "Keyword 2", data1: "Data1", data3: "Data3", data4: "Data4", etcCampaigns: "Campaigns" }
@@ -123,20 +123,35 @@ const Keyword = () => {
     { history: "History", data1: "Data1", data2: "Data2", data3: "Data3", data4: "Data4", data5: "Data5", data6: "Data6", data7: "Data7" }
   ];
 
+  const filteredProducts = products.filter(product =>
+    selectedColumns.some(column =>
+      product[column] && product[column].toString().toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", marginBottom: "20px" }}>
-     <Button style={{marginRight:"10px"}}>Filter</Button>
-        <Dropdown overlay={menu} trigger={['click']}>
-          <Button variant="primary">
-            Columns
-          </Button>
-        </Dropdown>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+        
+        <Form.Control 
+          type="text" 
+          placeholder="Search..." 
+          value={searchTerm} 
+          onChange={(e) => setSearchTerm(e.target.value)} 
+          style={{ width: '200px' }}
+        />
+        <div>
+          <Button style={{ marginRight: "10px" }}>Filter</Button>
+          <Dropdown overlay={menu} trigger={['click']}>
+            <Button variant="primary">
+              Columns
+            </Button>
+          </Dropdown>
+        </div>
       </div>
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
-        
             {selectedColumns.length === 0 ? (
               columns.map(column => <th key={column.key}>{column.label}</th>)
             ) : (
@@ -149,10 +164,9 @@ const Keyword = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product, index) => (
+          {filteredProducts.map((product, index) => (
             <React.Fragment key={product._id}>
               <tr onClick={() => handleRowClick(index)}>
-             
                 {selectedColumns.length === 0 ? (
                   columns.map(column => (
                     <td key={column.key}>
@@ -301,7 +315,6 @@ const Keyword = () => {
           <Pagination.Last onClick={() => handlePageChange(totalPages)} />
         </Pagination>
       </div>
-     
     </div>
   );
 };
