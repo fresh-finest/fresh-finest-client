@@ -70,6 +70,7 @@ export default function SingleProduct() {
   return (
     <Container className="mt-4">
       <Row>
+      
         <Col md={3}>
           <Card>
             <Card.Img variant="top" src="https://syruvia.com/cdn/shop/files/Untitled_design_23.png" />
@@ -80,6 +81,7 @@ export default function SingleProduct() {
         </Col>
         <Col md={9}>
           <Row>
+          <Card.Title style={{textAlign:"center", marginBottom:"20px", font:"bold"}}>Syruvia Vanilla Syrup</Card.Title>
             {products.map((product, index) => (
               <Col md={4} key={index} className="mb-4">
                 <Card
