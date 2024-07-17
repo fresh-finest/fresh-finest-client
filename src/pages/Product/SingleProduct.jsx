@@ -4,10 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import SkuDetails from './SkuDetails';
 import amazonlogo from '../../assets/images/amazonlogo.png';
 
-
-const amazonLogo =()=>{
+const amazonLogo = () => {
   return amazonlogo;
-}
+};
+
 export default function SingleProduct() {
   const [selectedSku, setSelectedSku] = useState(null);
 
@@ -38,7 +38,7 @@ export default function SingleProduct() {
       fnsku: 'X00002XZM',
       salesRank: '1100',
       brand: 'Syrup Brand',
-      status: 'Inctive',
+      status: 'Inactive',
       fbmFbaFbt: 'FBM',
       fbaFees: '$2.99',
       logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/EBay_logo.svg/1200px-EBay_logo.svg.png',
@@ -59,6 +59,102 @@ export default function SingleProduct() {
       fbaFees: '$1.79',
       logo: 'https://purepng.com/public/uploads/large/purepng.com-walmart-logologobrand-logoiconslogos-251519939045oqelv.png',
       name: 'Walmart'
+    },
+    {
+      sku: 'F-SY-5504-A',
+      title: 'Syrup Vanilla',
+      amazonPrice: '$12.99',
+      shippingCost: '$4.99',
+      uom: 'Bottle',
+      asin: 'B07XYL9XZL',
+      fnsku: 'X00001XZL',
+      salesRank: '1200',
+      brand: 'Syrup Brand',
+      status: 'Active',
+      fbmFbaFbt: 'FBA',
+      fbaFees: '$1.99',
+      logo: amazonLogo(),
+      name: 'Amazon'
+    },
+    {
+      sku: 'F-SY-5505-A',
+      title: 'Syrup Chocolate',
+      amazonPrice: '$14.99',
+      shippingCost: '$5.99',
+      uom: 'Bottle',
+      asin: 'B07XYL9XZM',
+      fnsku: 'X00002XZM',
+      salesRank: '1100',
+      brand: 'Syrup Brand',
+      status: 'Inactive',
+      fbmFbaFbt: 'FBM',
+      fbaFees: '$2.99',
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/EBay_logo.svg/1200px-EBay_logo.svg.png',
+      name: 'Ebay'
+    },
+    {
+      sku: 'F-SY-5506-A',
+      title: 'Syrup Caramel',
+      amazonPrice: '$13.99',
+      shippingCost: '$4.49',
+      uom: 'Bottle',
+      asin: 'B07XYL9XZN',
+      fnsku: 'X00003XZN',
+      salesRank: '1150',
+      brand: 'Syrup Brand',
+      status: 'Active',
+      fbmFbaFbt: 'FBT',
+      fbaFees: '$1.79',
+      logo: 'https://purepng.com/public/uploads/large/purepng.com-walmart-logologobrand-logoiconslogos-251519939045oqelv.png',
+      name: 'Walmart'
+    },
+    {
+      sku: 'F-SY-5507-A',
+      title: 'Syrup Vanilla',
+      amazonPrice: '$12.99',
+      shippingCost: '$4.99',
+      uom: 'Bottle',
+      asin: 'B07XYL9XZL',
+      fnsku: 'X00001XZL',
+      salesRank: '1200',
+      brand: 'Syrup Brand',
+      status: 'Inactive',
+      fbmFbaFbt: 'FBA',
+      fbaFees: '$1.99',
+      logo: amazonLogo(),
+      name: 'Amazon'
+    },
+    {
+      sku: 'F-SY-5508-A',
+      title: 'Syrup Chocolate',
+      amazonPrice: '$14.99',
+      shippingCost: '$5.99',
+      uom: 'Bottle',
+      asin: 'B07XYL9XZM',
+      fnsku: 'X00002XZM',
+      salesRank: '1100',
+      brand: 'Syrup Brand',
+      status: 'Active',
+      fbmFbaFbt: 'FBM',
+      fbaFees: '$2.99',
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/EBay_logo.svg/1200px-EBay_logo.svg.png',
+      name: 'Ebay'
+    },
+    {
+      sku: 'F-SY-5509-A',
+      title: 'Syrup Caramel',
+      amazonPrice: '$13.99',
+      shippingCost: '$4.49',
+      uom: 'Bottle',
+      asin: 'B07XYL9XZN',
+      fnsku: 'X00003XZN',
+      salesRank: '1150',
+      brand: 'Syrup Brand',
+      status: 'Inctive',
+      fbmFbaFbt: 'FBT',
+      fbaFees: '$1.79',
+      logo: 'https://purepng.com/public/uploads/large/purepng.com-walmart-logologobrand-logoiconslogos-251519939045oqelv.png',
+      name: 'Walmart'
     }
     // Add more products as needed
   ];
@@ -70,7 +166,6 @@ export default function SingleProduct() {
   return (
     <Container className="mt-4">
       <Row>
-      
         <Col md={3}>
           <Card>
             <Card.Img variant="top" src="https://syruvia.com/cdn/shop/files/Untitled_design_23.png" />
@@ -81,34 +176,36 @@ export default function SingleProduct() {
         </Col>
         <Col md={9}>
           <Row>
-          <Card.Title style={{textAlign:"center", marginBottom:"20px", font:"bold"}}>Syruvia Vanilla Syrup</Card.Title>
+            <Card.Title style={{ textAlign: "center", marginBottom: "20px", fontWeight: "bold" }}>Syruvia Vanilla Syrup</Card.Title>
             {products.map((product, index) => (
               <Col md={4} key={index} className="mb-4">
                 <Card
                   onClick={() => handleCardClick(product)}
                   style={{
                     cursor: 'pointer',
-                  
                     backgroundColor:
                       selectedSku && selectedSku.sku === product.sku
                         ? product.status === 'Active'
                           ? 'lightgreen'
                           : 'lightgray'
-                        : 'white'
+                        : 'white',
+                    // padding: '10px',
+                    borderRadius: '10px'
                   }}
                 >
                   <Card.Body
                     style={{
-                      borderRadius:"20px",
                       backgroundColor:
                         selectedSku && selectedSku.sku === product.sku
                           ? product.status === 'Active'
                             ? 'lightgreen'
                             : 'lightgray'
-                          : 'white'
+                          : 'white',
+                      padding: '10px',
+                      borderRadius: '10px'
                     }}
                   >
-                    <Card.Title>
+                    <Card.Title style={{ fontSize: '14px' }}>
                       {product.name}
                       <div
                         style={{
@@ -122,16 +219,17 @@ export default function SingleProduct() {
                       ></div>
                     </Card.Title>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <Card.Img variant="top" src={product.logo} style={{ width: '70px', marginBottom: '10px' }} />
+                      <Card.Img variant="top" src={product.logo} style={{ width: '50px', marginBottom: '10px' }} />
                       <ListGroup variant="flush">
                         <ListGroup.Item style={{
-                      backgroundColor:
-                        selectedSku && selectedSku.sku === product.sku
-                          ? product.status === 'Active'
-                            ? 'lightgreen'
-                            : 'lightgray'
-                          : 'white'
-                    }}>
+                          backgroundColor:
+                            selectedSku && selectedSku.sku === product.sku
+                              ? product.status === 'Active'
+                                ? 'lightgreen'
+                                : 'lightgray'
+                              : 'white',
+                          fontSize: '12px'
+                        }}>
                           {product.sku} <span className="text-muted">({product.title})</span>
                         </ListGroup.Item>
                       </ListGroup>
