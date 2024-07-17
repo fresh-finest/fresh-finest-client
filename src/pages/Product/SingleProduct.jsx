@@ -178,7 +178,7 @@ export default function SingleProduct() {
           <Row>
             <Card.Title style={{ textAlign: "center", marginBottom: "20px", fontWeight: "bold" }}>Syruvia Vanilla Syrup</Card.Title>
             {products.map((product, index) => (
-              <Col md={4} key={index} className="mb-4">
+              <Col md={3} key={index} className="mb-4">
                 <Card
                   onClick={() => handleCardClick(product)}
                   style={{
@@ -190,7 +190,8 @@ export default function SingleProduct() {
                           : 'lightgray'
                         : 'white',
                     // padding: '10px',
-                    borderRadius: '10px'
+                    borderRadius: '10px',
+                    width:"200px"
                   }}
                 >
                   <Card.Body
@@ -230,7 +231,7 @@ export default function SingleProduct() {
                               : 'white',
                           fontSize: '12px'
                         }}>
-                          {product.sku} <span className="text-muted">({product.title})</span>
+                          {product.sku} 
                         </ListGroup.Item>
                       </ListGroup>
                     </div>
