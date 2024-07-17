@@ -28,6 +28,7 @@ import Settings from "../Setting/Setting/Setting";
 
 import companyLogo from '../../assets/images/toplogo.png';
 import Keyword from "../Keyword/Keyword";
+import SingleProduct from "../Product/SingleProduct";
 
 const menuItems = [
   { key: "1", icon: <FaChartPie />, label: "Option1" },
@@ -39,7 +40,7 @@ const menuItems = [
     icon: <CiMail />,
     children: [
       { key: "5", label: "All products" },
-      { key: "6", label: "Option 6" },
+      { key: "6", label: "Items" },
       { key: "7", label: "Option 7" },
       { key: "8", label: "Option 8" },
     ],
@@ -97,6 +98,8 @@ export default function Dashboard() {
       return <AllProducts />;
     }else if(selectedKey ==="3"){
       return <Keyword/>
+    }else if(selectedKey ==="6"){
+      return <SingleProduct/>
     } else {
       return <div>Select an option from the menu</div>;
     }
